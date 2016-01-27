@@ -1,0 +1,74 @@
+/*
+CPSC 121 Lab 1
+Author:  Brian Bui
+Created on:  27 January 2016
+Last edited:  27 January 2016
+This program wil create a program that modulates coins in respect to cents.
+*/
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main()
+{
+	//  Initialize "choice" for the dowhile loop
+	char choice;
+
+	bool repeat = 1;
+
+	string stars = "****************************************"; //  40 stars
+
+	const int quarter = 25,
+		dime = 10,
+		nickel = 5;
+
+	int cents,  //  input by the user
+
+		//  End display
+		displayQuarter,
+		displayDime,
+		displayNickel;
+
+	do
+	{
+//  look at me being user friendly :^)
+	cout << stars << endl;
+	cout << "Welcome to the Centinater!" << endl;
+	cout << "Please enter the amount of cents." << endl;
+	cin >> cents;
+	cout << stars << endl;
+	
+//  calculate the amount of quarters from the initial cent value
+	displayQuarter = cents / quarter;
+	cents = cents % quarter;
+
+//  calculate the amount of dimes from the remaining cent value
+	displayDime = cents / dime;
+	cents = cents % dime;
+
+//  calculate the amount of nickels from the remaining cent value
+	displayNickel = cents / nickel;
+	cents = cents % nickel;
+
+//  display final result
+	cout << "Quarters:  " << displayQuarter << endl
+		<< "Dimes:  " << displayDime << endl
+		<< "Nickels:  " << displayNickel << endl
+		<< "Pennys:  " << cents << endl;
+
+//  ask user if you want to quit
+		cout << "Press 'N' to exit." << endl;
+		cin >> choice;
+		if (choice == 'n' || choice == 'N')
+		{
+			repeat = 0;
+		}
+		else
+		{
+			cout << string(50, '\n');
+		}
+	} while (repeat == 1);  //  boolean for the do while loop
+
+	//  system("pause");
+	return 0;
+}
