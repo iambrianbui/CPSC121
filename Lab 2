@@ -1,0 +1,129 @@
+/*
+====THE CALCULATINATOR====
+
+CPSC 121 Lab 2
+Created by:  Brian Bui
+Created on:  3 February 2016
+Last updated:  3 February 2016
+
+This program will work as a calculator
+*/
+
+#include<iostream>
+#include<string>
+
+using namespace std;
+
+void getChoice();
+void displayMenu();
+double addition(double&x, double&y, double&z);
+void subtraction();
+void division();
+void multiply();
+void modulus();
+
+string stars = "********************";
+
+const int min = 1, max = 6;
+int menu;
+
+int main()
+{
+	double input,
+		secondInput;
+	double answer = 0;
+	do
+	{
+		cout << "Welcome to the Calculatinator!" << endl;
+		cout << stars << stars << endl;
+		cout << stars << stars << endl;
+		cout << "Please enter a number:  " << endl;
+		cin >> input;
+		displayMenu();
+		if (menu == 1)
+		{
+
+			cout << "Please enter a number to add with the original number " << input << "." << endl;
+			cin >> secondInput;
+			addition(input, secondInput, answer);
+			cout << endl;
+
+			cout << input << " + " << secondInput << " = " << answer << endl;
+		if (menu == 2)
+		{
+			subtraction();
+		}
+		if (menu == 3)
+		{
+			division();
+		}
+		if (menu == 4)
+		{
+			multiply();
+		}
+		if (menu == 5)
+		{
+			modulus();
+		}
+	} while (menu != 6);
+
+	cout << "Goodbye!" << endl;
+
+	system("pause");
+	return 0;
+}
+
+void displayMenu()
+{
+	double input;
+	cout << stars << stars << endl;
+	cout << "What operator would you like to use?" << endl
+		<< "1..........Addition" << endl
+		<< "2..........Subtraction" << endl
+		<< "3..........Division" << endl
+		<< "4..........Multiplication" << endl
+		<< "5..........Modulus" << endl
+		<< "6..........Quit" << endl;
+	cin >> menu;
+	getChoice();
+}
+
+void getChoice()
+{
+	while (menu < min || menu > max)
+	{
+		while (cin.fail())
+		{
+			cin.clear();
+			cin.ignore();
+		}
+		cout << "Invalid input." << endl;
+		cin >> menu;
+	}
+}
+
+double addition(double&x, double&y, double&z)
+{
+	z = x + y;
+	return z;
+}
+
+void subtraction()
+{
+	cout << "Subtraction works" << endl;
+}
+
+void division()
+{
+	cout << "Division works" << endl;
+}
+
+void multiply()
+{
+	cout << "Multiplication works" << endl;
+}
+
+void modulus()
+{
+	cout << "Modulus works" << endl;
+}
