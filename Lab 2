@@ -1,12 +1,16 @@
 /*
 ====THE CALCULATINATOR====
 
-CPSC 121 Lab 2
+CPSC 121 Lab 2 v1.02
 Created by:  Brian Bui
 Created on:  3 February 2016
-Last updated:  3 February 2016
+Last updated: 9  February 2016
 
-This program will work as a calculator
+This program will work as a calculator.
+
+I could have used a simple, one function program; however, passing parameters was a big weakness of mine in CPSC120 and I felt that I had to brush up on it if I wanted to succeed in this class.
+Also, prototypes look cleaner, so there's that. :^)
+
 */
 
 #include<iostream>
@@ -14,68 +18,136 @@ This program will work as a calculator
 
 using namespace std;
 
-void getChoice();
-void displayMenu();
-double addition(double&x, double&y, double&z);
-void subtraction();
-void division();
-void multiply();
-void modulus();
+void getChoice();  //  Validate an input for the menu
+void displayMenu();  //  Displays the menu
+double addition(double&x, double&y, double&z);  //  addition function
+double subtraction(double&x, double&y, double&z);  //  subtraction function
+double division(double&x, double&y, double&z);  //  division function
+double multiply(double&x, double&y, double&z);  // multiply function
+int modulus(int&x, int&y, int&z);  //  modulus function:  TIL, MODULUS IS STRICTLY FOR INTEGERS
 
-string stars = "********************";
+string stars = "********************";  //  Stars for formatting
 
-const int min = 1, max = 6;
-int menu;
+const int min = 1, max = 6;  //  Validation
+int menu;  //  menu input
 
 int main()
 {
-	double input,
+	//  Integers for Modulus
+	int input, 
 		secondInput;
-	double answer = 0;
+	int answer = 0;
+
+	//  Float for any other function
+	double floatInput,
+		floatSecond;
+	double floatAnswer = 0;
+
+	//  beginning of the do while loop
 	do
 	{
 		cout << "Welcome to the Calculatinator!" << endl;
 		cout << stars << stars << endl;
 		cout << stars << stars << endl;
-		cout << "Please enter a number:  " << endl;
+		cout << "Please enter an integer:  " << endl;  //  note, asking for an INTEGER
 		cin >> input;
-		displayMenu();
+		displayMenu();  //  call the display menu function
+
+		//  Addition
 		if (menu == 1)
 		{
+			cout << "Please enter a number to add with the original number " << input << "." << endl;  //  asking for ANY NUMBER
+			cin >> floatSecond;
 
-			cout << "Please enter a number to add with the original number " << input << "." << endl;
-			cin >> secondInput;
-			addition(input, secondInput, answer);
+			floatInput = input;
+
+			addition(floatInput, floatSecond, floatAnswer);
 			cout << endl;
 
-			cout << input << " + " << secondInput << " = " << answer << endl;
+			cout << floatInput << " + " << floatSecond << " = " << floatAnswer << endl;
+			cin.clear();
+			cin.ignore();
+		}
+
+		//  Subtraction
 		if (menu == 2)
 		{
-			subtraction();
-		}
-		if (menu == 3)
-		{
-			division();
-		}
-		if (menu == 4)
-		{
-			multiply();
-		}
-		if (menu == 5)
-		{
-			modulus();
-		}
-	} while (menu != 6);
+			cout << "Please enter a number to subtract with the original number " << input << "." << endl;
+			cin >> floatSecond;
 
-	cout << "Goodbye!" << endl;
+			floatInput = input;
 
-	system("pause");
-	return 0;
+			subtraction(floatInput, floatSecond, floatAnswer);
+			cout << endl;
+
+			cout << floatInput << " - " << floatSecond << " = " << floatAnswer << endl;	
+			cin.clear();
+			cin.ignore();
+		}
+
+		//  Division
+			if (menu == 3)
+			{
+				cout << "Please enter a number to divide with the original number " << input << "." << endl;
+				floatInput = input;
+
+				cin >> floatSecond;
+				while (floatSecond == 0)
+				{
+					cout << "Cannot divide by zero...try again." << endl;
+					cin >> floatSecond;
+				}
+
+
+				division(floatInput, floatSecond, floatAnswer);
+				cout << endl;
+
+				floatAnswer = floatInput / floatSecond;
+				cout << floatInput << " / " << floatSecond << " = " << floatAnswer << endl;
+				cin.clear();
+				cin.ignore();
+			}
+
+		//  Multiplication
+			if (menu == 4)
+			{
+				cout << "Please enter a number to multiply with the original number " << input << "." << endl;
+				cin >> floatSecond;
+
+				floatInput = input;
+
+				multiply(floatInput, floatSecond, floatAnswer);
+				cout << endl;
+
+				cout << floatInput << " * " << floatSecond << " = " << floatAnswer << endl;
+				cin.clear();
+				cin.ignore();
+			}
+
+		//  Modulus
+			if (menu == 5)
+			{
+				cout << "Please enter a number to modulate with the original number " << input << "." << endl;
+				cin >> secondInput;
+				modulus(input, secondInput, answer);
+				cout << endl;
+			
+				cout << input << " % " << secondInput << " = " << answer << endl;
+				cin.clear();
+				cin.ignore();
+			}
+		} while (menu != 6);
+
+		//  Peace out
+		cout << "Goodbye!" << endl;
+
+		system("pause");
+		return 0;
 }
 
+//  simple menu that calls on the validation immediately after input
 void displayMenu()
 {
-	double input;
 	cout << stars << stars << endl;
 	cout << "What operator would you like to use?" << endl
 		<< "1..........Addition" << endl
@@ -88,6 +160,7 @@ void displayMenu()
 	getChoice();
 }
 
+//  checks for letters and numbers out of the range
 void getChoice()
 {
 	while (menu < min || menu > max)
@@ -102,28 +175,37 @@ void getChoice()
 	}
 }
 
+//  basic addition
 double addition(double&x, double&y, double&z)
 {
 	z = x + y;
 	return z;
 }
 
-void subtraction()
+//  basic subtraction
+double subtraction(double&x, double&y, double&z)
 {
-	cout << "Subtraction works" << endl;
+	z = x - y;
+	return z;
 }
 
-void division()
+//  basic division
+double division(double&x, double&y, double&z)
 {
-	cout << "Division works" << endl;
+	z = x / y;
+	return z;
 }
 
-void multiply()
+//  basic multiplication
+double multiply(double&x, double&y, double&z)
 {
-	cout << "Multiplication works" << endl;
+	z = x * y;
+	return z;
 }
 
-void modulus()
+//  basic modulus
+int modulus(int&x, int&y, int&z)
 {
-	cout << "Modulus works" << endl;
+	z = x % y;
+	return z;
 }
