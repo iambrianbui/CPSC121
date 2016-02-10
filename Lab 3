@@ -1,0 +1,125 @@
+/*
+CPSC121 Lab 3
+Printing Shapes
+Created by:  Brian Bui
+Created on:  10 February 2016
+Last updated:  10 February 2016
+*/
+
+#include<iostream>
+#include<iomanip>
+#include<string>
+
+using namespace std;
+
+void drawRectangle(int&x, int&y);
+void drawTriangle(int&x);
+void getChoice(int&x);
+
+const int min = 1, max = 3;
+
+int main()
+{ 
+	char choice;
+	int width,
+		height,
+		menu;
+	string stars = "********************";
+	do
+	{
+		cout << "Welcome to the Shape Drawer!" << endl;
+		cout << stars << stars << endl;
+		cout << stars << stars << endl;
+		cout << "What shape would you like to draw?" << endl;
+		cout << "Rectangle:  " << setw(10) << "1" << endl;
+		cout << "Triangle:  " << setw(11) << "2" << endl;
+		cout << "Exit:  " << setw(15) << "3" << endl;
+		cin >> menu;
+		getChoice(menu);
+
+		if (menu == 1)
+		{
+			cout << "Please input the width of the rectangle." << endl;
+			cin >> width;
+			cout << "Please input the height of the rectangle." << endl;
+			cin >> height;
+
+			drawRectangle(width, height);
+			cout << endl;
+
+			cout << "Press any key to continue, or n/N to exit" << endl;
+			cin >> choice;
+			if (choice == 'n' || choice == 'N')
+			{
+				cout << "Goodbye!" << endl;
+				return 0;
+			}
+		}
+
+		if (menu == 2)
+		{
+			cout << "Please input the size of the triangle." << endl;
+			cin >> width;
+
+			drawTriangle(width);
+			cout << endl;
+
+			cout << "Press any key to continue, or n/N to exit" << endl;
+			cin >> choice;
+			if (choice == 'n' || choice == 'N')
+			{
+				cout << "Goodbye!" << endl;
+				return 0;
+			}
+		}
+
+	} while (menu != 3);
+
+	cout << "Goodbye!" << endl;
+
+	system("pause");
+	return 0;
+}
+
+
+void getChoice(int&x)
+{
+	while (x < min || x > max)
+	{
+		while (cin.fail())
+		{
+			cin.clear();
+			cin.ignore();
+		}
+		cout << "Invalid input." << endl;
+		cin >> x;
+	}
+}
+
+void drawRectangle(int&x, int&y)
+{
+	for (int i = 0; i < y; i++)
+	{
+		for (int j = 0; j < x; j++)
+		{
+			cout << "*";
+		}
+		cout << endl;
+	}
+}
+
+void drawTriangle(int&x)
+{
+	int y, z;
+	y = x - 1;
+	z = x - y;
+	for (int i = 0; i < x; i++)
+	{
+		for (int j = 0; j < z; j++)
+		{
+			cout << "*";
+		}
+		z++;
+		cout << endl;
+	}
+}
