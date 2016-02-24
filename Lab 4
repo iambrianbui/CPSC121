@@ -1,0 +1,129 @@
+/*
+CSPC121 Lab 4
+Using Arrays
+Created by:  Brian Bui
+Created on:  24 February 2016
+Last updated:  24 February 2016
+*/
+
+#include<iostream>
+#include<string>
+using namespace std;
+
+void getChoice(int&x);
+void addArray(int [], int);
+void meanArray(int[], int);
+void displayArray(int [], int);
+int changeArray(int[], int);
+
+
+
+const int min = 1, max = 5;
+const int SIZE = 4;
+
+
+int main()
+{
+	int menu;
+	string stars = "********************";
+	cout << "Welcome to the Array Modifier" << endl;
+	cout << stars << stars << endl;
+	cout << stars << stars << endl;
+	cout << "Please insert values for an array of five integers." << endl;
+	int intArray[SIZE];
+	for (int i = 0; i <= SIZE; i++)
+	{
+		cin >> intArray[i];
+	}
+
+	do
+	{
+		cout << "1.....Calculate the sum of numbers in the array." <<
+			endl << "2.....Calculate the average of numbers in the array." <<
+			endl << "3.....Display the current values in the array." <<
+			endl << "4.....Edit the array." <<
+			endl << "5.....Exit the program." << endl;
+		cin >> menu;
+		getChoice(menu);
+
+		if (menu == 1)
+		{
+			addArray(intArray, SIZE);
+		}
+
+		if (menu == 2)
+		{
+			meanArray(intArray, SIZE);
+		}
+
+		if (menu == 3)
+		{
+			displayArray(intArray, SIZE);
+		}
+		if (menu == 4)
+		{
+			changeArray(intArray, SIZE);
+		}
+
+	} while (menu != 5);
+
+
+	cout << "Goodbye!" << endl;
+	system("pause");
+	return 0;
+}
+
+void getChoice(int&x)
+{
+	while (x < min || x > max)
+	{
+		while (cin.fail())
+		{
+			cin.clear();
+			cin.ignore();
+		}
+		cout << "Invalid input." << endl;
+		cin >> x;
+	}
+}
+
+void addArray(int intArray[], int SIZE)
+{
+	int finalValue = 0;
+	for (int i = 0; i <= SIZE; i++)
+	{
+		finalValue += intArray[i];
+	}
+	cout << finalValue << endl;
+}
+
+void meanArray(int intArray[], int SIZE)
+{
+	double finalValue = 0;
+	for (int i = 0; i <= SIZE; i++)
+	{
+		finalValue += intArray[i];
+	}
+	finalValue = finalValue / SIZE;
+	cout << finalValue << endl;
+}
+
+void displayArray(int intArray[], int SIZE)
+{
+	for (int i = 0; i <= SIZE; i++)
+	{
+		cout << intArray[i] << endl;
+	}
+	cout << endl;
+}
+
+int changeArray(int intArray[], int SIZE)
+{
+	for (int i = 0; i <= SIZE; i++)
+	{
+		cin >> intArray[i];
+
+	}
+	return intArray[SIZE];
+
+}
