@@ -1,0 +1,123 @@
+#include<iostream>
+#include<string>
+#include<cctype>
+
+using namespace std;
+
+const int SIZE = 10;
+const int min = 1, max = 6;
+
+struct Student
+{
+	string studentName;
+	double studentScore[SIZE];
+};
+
+void getChoice(int&x);
+Student newStudent(bool);
+void newGrade();
+
+Student displayStudent();
+void displayScore();
+void displayGradebook();
+
+int main()
+{
+	int choice;
+
+	int studentCount = 0;
+	int assignmentCount = 0;
+
+	Student student[SIZE];
+	bool studentSpace = true;
+	bool assignmentSpace = true;
+	string lines = "====================";
+	do // loop
+	{
+		cout << "Welcome to Aeries Portal." << endl;
+		cout << lines << lines << endl;
+		cout << "1..........Add a student." <<
+			endl << "2..........Assign a grade." <<
+			endl << "3..........Find a student." <<
+			endl << "4..........Find an assignment." <<
+			endl << "5..........Display all grades." <<
+			endl << "6..........Exit." << endl;
+		cin >> choice;
+		getChoice(choice);
+
+		if (choice == 1)
+		{
+			newStudent(studentSpace);
+			studentCount++;
+			if (studentCount >= SIZE)
+			{
+				studentSpace = false;
+			}
+		}
+
+		if (choice == 2)
+		{
+
+		}
+
+		if (choice == 3)
+		{
+			cout << student[0] << endl;
+			cout << student[1] << endl;
+			cout << student[2] << endl;
+		}
+
+		if (choice == 4)
+		{
+
+		}
+
+		if (choice == 5)
+		{
+
+		}
+
+	} while (choice != 6);
+
+	cout << "Goodbye!" << endl;
+
+	system("pause");
+	return 0;
+}
+
+void getChoice(int&x)
+{
+	while (x < min || x > max)
+	{
+		while (cin.fail())
+		{
+			cin.clear();
+			cin.ignore();
+		}
+		cout << "Invalid input." << endl;
+		cin >> x;
+	}
+}
+
+Student newStudent(bool space)
+{
+	string name;	
+
+	Student tempStu;
+
+	if (space == true)
+	{
+		cin.clear();
+
+		cout << "Please enter the student name." << endl;
+		getline(cin, tempStu.studentName);
+
+		cin.ignore(1000, '\n');
+		return tempStu;
+	}
+	else
+		cout << "No more space in the student registry!" << endl;
+	cin.clear();
+	cin.ignore(1000, '\n');
+}
+
