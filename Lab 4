@@ -1,9 +1,9 @@
 /*
 CSPC121 Lab 4
-Using Arrays
+Using Arrays v1.00
 Created by:  Brian Bui
 Created on:  24 February 2016
-Last updated:  24 February 2016
+Last updated:  29 February 2016
 */
 
 #include<iostream>
@@ -11,32 +11,39 @@ Last updated:  24 February 2016
 using namespace std;
 
 void getChoice(int&x);
-void addArray(int [], int);
-void meanArray(int[], int);
-void displayArray(int [], int);
-int changeArray(int[], int);
+void addArray(int [], int);  // adding array function
+void meanArray(int[], int);  //  mean function
+void displayArray(int [], int);  //  display array function
+int changeArray(int[], int);  //  change array function
 
 
+const int min = 1, max = 5;  //  for menu
+const int SIZE = 4;  //  for array
 
-const int min = 1, max = 5;
-const int SIZE = 4;
+const string lines = "==========";  //  10 equal signs to break up numbers
 
 
 int main()
 {
 	int menu;
-	string stars = "********************";
+
+	//  just being friendly
+	string stars = "*************************";
 	cout << "Welcome to the Array Modifier" << endl;
 	cout << stars << stars << endl;
 	cout << stars << stars << endl;
-	cout << "Please insert values for an array of five integers." << endl;
+
+	cout << "Please insert values for an array of five integers." << endl;  //  initalization of array
 	int intArray[SIZE];
+	cout << lines << endl;
 	for (int i = 0; i <= SIZE; i++)
 	{
 		cin >> intArray[i];
 	}
 
-	do
+	cout << lines << endl;
+	//  menu
+	do  //  loop
 	{
 		cout << "1.....Calculate the sum of numbers in the array." <<
 			endl << "2.....Calculate the average of numbers in the array." <<
@@ -48,24 +55,24 @@ int main()
 
 		if (menu == 1)
 		{
-			addArray(intArray, SIZE);
+			addArray(intArray, SIZE);  //  calls on addarray function
 		}
 
 		if (menu == 2)
 		{
-			meanArray(intArray, SIZE);
+			meanArray(intArray, SIZE);  //  calls of meanarray function
 		}
 
 		if (menu == 3)
 		{
-			displayArray(intArray, SIZE);
+			displayArray(intArray, SIZE);  //  calls on displayarray function
 		}
 		if (menu == 4)
 		{
-			changeArray(intArray, SIZE);
+			changeArray(intArray, SIZE);  //  calls on change array function
 		}
 
-	} while (menu != 5);
+	} while (menu != 5);  //  exits on 5
 
 
 	cout << "Goodbye!" << endl;
@@ -92,9 +99,11 @@ void addArray(int intArray[], int SIZE)
 	int finalValue = 0;
 	for (int i = 0; i <= SIZE; i++)
 	{
-		finalValue += intArray[i];
+		finalValue += intArray[i];  //  adds up the values within the array
 	}
+	cout << lines << endl;
 	cout << finalValue << endl;
+	cout << lines << endl;
 }
 
 void meanArray(int intArray[], int SIZE)
@@ -102,28 +111,32 @@ void meanArray(int intArray[], int SIZE)
 	double finalValue = 0;
 	for (int i = 0; i <= SIZE; i++)
 	{
-		finalValue += intArray[i];
+		finalValue += intArray[i];  //  adds up the values within the array
 	}
-	finalValue = finalValue / SIZE;
+	finalValue = finalValue / SIZE;  //  divide by the size
+	cout << lines << endl;
 	cout << finalValue << endl;
+	cout << lines << endl;
 }
 
 void displayArray(int intArray[], int SIZE)
 {
+	cout << lines << endl;
 	for (int i = 0; i <= SIZE; i++)
 	{
-		cout << intArray[i] << endl;
+		cout << intArray[i] << endl;  // prints the array
 	}
+	cout << lines << endl;
 	cout << endl;
 }
 
 int changeArray(int intArray[], int SIZE)
 {
+	cout << lines << endl;
 	for (int i = 0; i <= SIZE; i++)
 	{
-		cin >> intArray[i];
+		cin >> intArray[i];  //  allows the user to change the array and returns the array values
 
 	}
 	return intArray[SIZE];
-
 }
