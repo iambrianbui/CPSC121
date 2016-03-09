@@ -1,37 +1,44 @@
+/*
+CPSC 121 - Lab 5
+Take 3
+Created by:  Brian Bui
+Started on:  2 March 2016
+Last edited:  9 March 2016
+*/
+
 #include<iostream>
 #include<string>
-#include<cctype>
+#include<cstring>
 
 using namespace std;
 
 const int SIZE = 10;
 const int min = 1, max = 6;
 
+void getChoice(int&x);
+void newStudent(struct Student student[], int x, bool);
+void printStudent(struct Student student[], int max);
+void gradeStudent(struct Student student[], int max);
+
 struct Student
 {
-	string studentName;
-	double studentScore[SIZE];
+	string firstName,
+		lastName;
+	double score[SIZE];
 };
-
-void getChoice(int&x);
-Student newStudent(bool);
-void newGrade();
-
-Student displayStudent();
-void displayScore();
-void displayGradebook();
 
 int main()
 {
+	struct Student cabinet[SIZE];
+	string lines = "====================";
+
 	int choice;
+	int stuCount = 0;
+	int assignment = 0;
 
-	int studentCount = 0;
-	int assignmentCount = 0;
-
-	Student student[SIZE];
 	bool studentSpace = true;
 	bool assignmentSpace = true;
-	string lines = "====================";
+
 	do // loop
 	{
 		cout << "Welcome to Aeries Portal." << endl;
@@ -47,9 +54,9 @@ int main()
 
 		if (choice == 1)
 		{
-			newStudent(studentSpace);
-			studentCount++;
-			if (studentCount >= SIZE)
+			newStudent(cabinet, stuCount, studentSpace);
+			stuCount++;
+			if (stuCount >= SIZE)
 			{
 				studentSpace = false;
 			}
@@ -57,14 +64,16 @@ int main()
 
 		if (choice == 2)
 		{
+			if (stuCount = 0)
+			{
+				cout << "There are no students in the registry!" << endl;
 
+			}
 		}
 
 		if (choice == 3)
 		{
-			cout << student[0] << endl;
-			cout << student[1] << endl;
-			cout << student[2] << endl;
+			printStudent(cabinet, stuCount);
 		}
 
 		if (choice == 4)
@@ -99,21 +108,16 @@ void getChoice(int&x)
 	}
 }
 
-Student newStudent(bool space)
+void newStudent(struct Student student[], int i, bool space)
 {
-	string name;	
-
-	Student tempStu;
-
 	if (space == true)
 	{
 		cin.clear();
+		cout << "Please enter the student's first name:  " << endl;
+		cin >> student[i].firstName;
+		cout << "Please enter the student's last name:  " << endl;
+		cin >> student[i].lastName;
 
-		cout << "Please enter the student name." << endl;
-		getline(cin, tempStu.studentName);
-
-		cin.ignore(1000, '\n');
-		return tempStu;
 	}
 	else
 		cout << "No more space in the student registry!" << endl;
@@ -121,3 +125,12 @@ Student newStudent(bool space)
 	cin.ignore(1000, '\n');
 }
 
+void printStudent(struct Student student[], int max)
+{
+	for (int i = 0; i < max; i++)
+	{
+		cout << "Student Name:  " << student[i].lastName << ", " << student[i].firstName << endl;
+	}
+}
+
+void gradeStudent(struct Student student[], int max)
