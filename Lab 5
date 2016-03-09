@@ -16,9 +16,9 @@ const int SIZE = 10;
 const int min = 1, max = 6;
 
 void getChoice(int&x);
-void newStudent(struct Student student[], int x, bool);
-void printStudent(struct Student student[], int max);
-void gradeStudent(struct Student student[], int max);
+void newStudent(struct Student student[], int x, bool, int assignment);
+void gradeStudent(struct Student student[], int max, int& assignment, bool);
+void findStudent(struct Student student[], int max, int assignment);
 
 struct Student
 {
@@ -54,26 +54,37 @@ int main()
 
 		if (choice == 1)
 		{
-			newStudent(cabinet, stuCount, studentSpace);
+			newStudent(cabinet, stuCount, studentSpace, assignment);
 			stuCount++;
 			if (stuCount >= SIZE)
 			{
 				studentSpace = false;
+				stuCount = stuCount -1;
 			}
 		}
 
 		if (choice == 2)
 		{
-			if (stuCount = 0)
+			if (stuCount == 0)
 			{
 				cout << "There are no students in the registry!" << endl;
-
 			}
+			else
+				if (assignment >= SIZE)
+				{
+					assignmentSpace = false;
+					assignment = assignment - 1;
+				}
+				else
+					{
+						gradeStudent(cabinet, stuCount, assignment, assignmentSpace);
+						assignment++;
+					}
 		}
 
 		if (choice == 3)
 		{
-			printStudent(cabinet, stuCount);
+			findStudent(cabinet, stuCount, assignment);
 		}
 
 		if (choice == 4)
@@ -108,7 +119,7 @@ void getChoice(int&x)
 	}
 }
 
-void newStudent(struct Student student[], int i, bool space)
+void newStudent(struct Student student[], int i, bool space, int assignment)
 {
 	if (space == true)
 	{
@@ -121,16 +132,56 @@ void newStudent(struct Student student[], int i, bool space)
 	}
 	else
 		cout << "No more space in the student registry!" << endl;
+	cout << string(50, '\n');
 	cin.clear();
 	cin.ignore(1000, '\n');
 }
 
-void printStudent(struct Student student[], int max)
+void gradeStudent(struct Student student[], int max, int& assignment, bool space)
 {
-	for (int i = 0; i < max; i++)
+	if (space == true)
 	{
-		cout << "Student Name:  " << student[i].lastName << ", " << student[i].firstName << endl;
+		for (int i = 0; i < max; i++)
+		{
+			cout << "Student Name:  " << student[i].lastName << ", " << student[i].firstName << endl;
+			cout << "Assignment:  ";
+			cin >> student[i].score[assignment];
+		}
 	}
+	else
+		cout << "No more space in the assignment registry!" << endl;
+	cout << string(50, '\n');
+	cin.clear();
+	cin.ignore(1000, '\n');
+
 }
 
-void gradeStudent(struct Student student[], int max)
+void findStudent(struct Student student[], int max, int assignment)
+{
+	int choice;
+	double finalValue = 0;
+
+	cout << "Please select which student you would like to access.  (Please press the number corresponding the the respective student)" << endl;
+	for (int i = 0; i < max; i++)
+	{
+		cout << i+1 << ". " << student[i].lastName << ", " << student[i].firstName << endl;
+	}
+	cin.clear();
+	cin.ignore(1000, '\n');
+	cin >> choice;
+	choice = choice - 1;
+
+	{
+		cout << "Student Name:  " << student[choice].lastName << ", " << student[choice].firstName << endl;
+		
+		for (int i = 0; i < assignment; i++)
+		{
+			cout << "Assignment " << i+1 << ":  "  << student[choice].score[i] << endl;
+			finalValue += student[choice].score[i];
+		}
+		finalValue = finalValue / assignment;
+		cout << "Average:  " << finalValue << endl;
+
+	}
+
+}
