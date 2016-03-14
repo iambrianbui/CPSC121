@@ -3,7 +3,7 @@ CPSC 121 - Lab 5
 Take 3
 Created by:  Brian Bui
 Started on:  2 March 2016
-Last edited:  9 March 2016
+Last edited:  14 March 2016
 */
 
 #include<iostream>
@@ -15,12 +15,14 @@ using namespace std;
 const int SIZE = 10;
 const int min = 1, max = 6;
 
-void getChoice(int&x);
-void newStudent(struct Student student[], int x, bool, int assignment);
-void gradeStudent(struct Student student[], int max, int& assignment, bool);
-void findStudent(struct Student student[], int max, int assignment);
+void getChoice(int&x);  //  get choice function
+void newStudent(struct Student student[], int x, int assignment);  //  first function
+void gradeStudent(struct Student student[], int max, int& assignment);  //  second function
+void findStudent(struct Student student[], int max, int assignment);  //  third function
+void findAssignment(struct Student student[], int max, int choice);  //  fourth function
+void displayGrade(struct Student student[], int max, int assignment);  // fifth function
 
-struct Student
+struct Student  // standard structure, used for students
 {
 	string firstName,
 		lastName;
@@ -29,13 +31,14 @@ struct Student
 
 int main()
 {
-	struct Student cabinet[SIZE];
-	string lines = "====================";
+	struct Student cabinet[SIZE];   //  cabinet as in file cabinet heh
+	string lines = "====================";  //  spacing
 
-	int choice;
-	int stuCount = 0;
+	int choice;  //  getting choices for the main menu
+	int stuCount = 0;  
 	int assignment = 0;
 
+	//  seeing if there is space
 	bool studentSpace = true;
 	bool assignmentSpace = true;
 
@@ -43,58 +46,135 @@ int main()
 	{
 		cout << "Welcome to Aeries Portal." << endl;
 		cout << lines << lines << endl;
-		cout << "1..........Add a student." <<
-			endl << "2..........Assign a grade." <<
-			endl << "3..........Find a student." <<
-			endl << "4..........Find an assignment." <<
-			endl << "5..........Display all grades." <<
+		cout << "1..........Add a student." <<  /*  add a new student to the class
+												i.  prompts for first name, last name x
+												ii.  if assignments already exist, ask user fornew student's scores to assignment
+												*/
+			endl << "2..........Assign a grade." << /*  assign grades for a new assignment
+													i. if students already exist, prompt user with username, ask them for score
+													*/
+			endl << "3..........Find a student." << //  list one student, displaying all their students and courage average
+			endl << "4..........Find an assignment." <<  //  prompt user for assignment, include class average
+			endl << "5..........Display all grades." <<  //  display all grades currently contained in the gradebook
 			endl << "6..........Exit." << endl;
-		cin >> choice;
-		getChoice(choice);
+		cin >> choice;	
+		getChoice(choice);  //  call on the getchoice function
 
 		if (choice == 1)
 		{
-			newStudent(cabinet, stuCount, studentSpace, assignment);
-			stuCount++;
-			if (stuCount >= SIZE)
+			if (stuCount == SIZE)  // see if there are too many students
 			{
-				studentSpace = false;
-				stuCount = stuCount -1;
+				studentSpace = false;  //  set the studentspace = false
+				cout << string(50, '\n');
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "There are too many students in the registry." << endl;
 			}
+			else
+				newStudent(cabinet, stuCount, assignment);  // call on the new student function
+			if (studentSpace == true)
+			{
+				stuCount++;  //  increase the student count
+			}
+
 		}
 
 		if (choice == 2)
 		{
-			if (stuCount == 0)
+			if (stuCount == 0)  //  check if there are students
 			{
-				cout << "There are no students in the registry!" << endl;
+				cout << string(50, '\n');
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "There are no students in the registry." << endl;
+
 			}
 			else
-				if (assignment >= SIZE)
+				if (assignment == SIZE)
 				{
-					assignmentSpace = false;
-					assignment = assignment - 1;
+					assignmentSpace = false;  // set the assignment space false
+					cout << string(50, '\n');
+					cin.clear();
+					cin.ignore(1000, '\n');
+					cout << "There are too many assignments in the registry." << endl;
 				}
 				else
 					{
-						gradeStudent(cabinet, stuCount, assignment, assignmentSpace);
-						assignment++;
+						gradeStudent(cabinet, stuCount, assignment);  //  call function
+						if (assignmentSpace == true)
+						{
+							assignment++;
+						}
 					}
 		}
 
 		if (choice == 3)
 		{
-			findStudent(cabinet, stuCount, assignment);
+			if (stuCount == 0)   //  check if there are students
+			{
+				cout << string(50, '\n');
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "There are no students in the registry." << endl;
+			}
+			else
+			{
+				findStudent(cabinet, stuCount, assignment);  //  call function
+			}
 		}
 
 		if (choice == 4)
 		{
+			if (stuCount == 0)   //  check if there are students
+			{
+				cout << string(50, '\n');
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "There are no students in the registry." << endl;
+			}
+			else if (assignment == 0)  //  check if there are assignments
+			{
+				cout << string(50, '\n');
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "There are no assignments in the registry." << endl;
+			}
+			else
+			{
+				cout << "Which assignment are would you like to access?" << endl;
+				for (int i = 0; i < assignment; i++) //  for loop to show assignment hud
+				{
+					cout << i + 1 << ".  Assignment " << i + 1 << endl;
+				}
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cin >> choice;
+				while (choice < 0 || choice > assignment)  //  make sure the user cannot enter numbers out of the parameters
+				{
+					while (cin.fail())
+					{
+						cin.clear();
+						cin.ignore();
+					}
+					cout << "Invalid input." << endl;
+					cin >> choice;
+				}
 
+				findAssignment(cabinet, stuCount, choice);  // call function
+
+			}
 		}
 
 		if (choice == 5)
 		{
-
+			if (stuCount == 0)  //  check if there are students
+			{
+				cout << string(50, '\n');
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "There are no students in the registry." << endl;
+			}
+			displayGrade(cabinet, stuCount, assignment);  //  call function
 		}
 
 	} while (choice != 6);
@@ -102,10 +182,10 @@ int main()
 	cout << "Goodbye!" << endl;
 
 	system("pause");
-	return 0;
+	return 0;  //  PEACE OUT
 }
 
-void getChoice(int&x)
+void getChoice(int&x)   //  make sure the user cannot enter numbers out of the parameters
 {
 	while (x < min || x > max)
 	{
@@ -119,69 +199,120 @@ void getChoice(int&x)
 	}
 }
 
-void newStudent(struct Student student[], int i, bool space, int assignment)
+void newStudent(struct Student student[], int i, int assignment)  //  creates a new student in the registry
 {
-	if (space == true)
-	{
 		cin.clear();
 		cout << "Please enter the student's first name:  " << endl;
-		cin >> student[i].firstName;
+		cin >> student[i].firstName;  //  give x student firstname
 		cout << "Please enter the student's last name:  " << endl;
-		cin >> student[i].lastName;
-
-	}
-	else
-		cout << "No more space in the student registry!" << endl;
-	cout << string(50, '\n');
-	cin.clear();
-	cin.ignore(1000, '\n');
+		cin >> student[i].lastName;  //  give x student lastname
+		if (assignment > 0)  // check if there were already assignments
+		{
+			cout << "Assignments were found before student was created, please insert scores:" << endl;  //  make up for lost assignments
+			for (int j = 0; j < assignment; j++)
+			{
+				cout << "Assignment " << j+1 << ": "; 
+				cin >> student[i].score[j];  //  give x student y score
+			}
+		}
 }
 
-void gradeStudent(struct Student student[], int max, int& assignment, bool space)
+void gradeStudent(struct Student student[], int max, int& assignment)  //  input assignments scores for students
 {
-	if (space == true)
-	{
 		for (int i = 0; i < max; i++)
 		{
-			cout << "Student Name:  " << student[i].lastName << ", " << student[i].firstName << endl;
+			cout << "Student Name:  " << student[i].lastName << ", " << student[i].firstName << endl;  //  find x student
 			cout << "Assignment:  ";
-			cin >> student[i].score[assignment];
+			cin >> student[i].score[assignment];  //  give x student y score
 		}
-	}
-	else
-		cout << "No more space in the assignment registry!" << endl;
-	cout << string(50, '\n');
-	cin.clear();
-	cin.ignore(1000, '\n');
-
 }
 
-void findStudent(struct Student student[], int max, int assignment)
+void findStudent(struct Student student[], int max, int assignment)  //  finds student, gets assignment, calculate average
 {
 	int choice;
 	double finalValue = 0;
 
 	cout << "Please select which student you would like to access.  (Please press the number corresponding the the respective student)" << endl;
-	for (int i = 0; i < max; i++)
+	for (int i = 0; i < max; i++)  //  allow user to make a choice
 	{
-		cout << i+1 << ". " << student[i].lastName << ", " << student[i].firstName << endl;
+		cout << i + 1 << ". " << student[i].lastName << ", " << student[i].firstName << endl;
 	}
 	cin.clear();
 	cin.ignore(1000, '\n');
 	cin >> choice;
+	while (choice < 0 || choice > max)  //  make sure the user cannot enter numbers out of the parameters
+	{
+		while (cin.fail())
+		{
+			cin.clear();
+			cin.ignore();
+		}
+		cout << "Invalid input." << endl;
+		cin >> choice;
+	}
 	choice = choice - 1;
 
 	{
 		cout << "Student Name:  " << student[choice].lastName << ", " << student[choice].firstName << endl;
-		
+
 		for (int i = 0; i < assignment; i++)
 		{
-			cout << "Assignment " << i+1 << ":  "  << student[choice].score[i] << endl;
+			cout << "Assignment " << i + 1 << ":  " << student[choice].score[i] << endl;
 			finalValue += student[choice].score[i];
 		}
 		finalValue = finalValue / assignment;
 		cout << "Average:  " << finalValue << endl;
+	}
+	system("pause");
+	cout << string(50, '\n');
+	cin.clear();
+	cin.ignore(1000, '\n');
+}
 
+	void findAssignment(struct Student student[], int max, int choice)
+	{
+
+		double finalValue = 0;
+
+		cout << "Assignment " << choice << endl;
+
+		choice = choice - 1;
+		for (int i = 0; i < max; i++)
+		{
+			cout << student[i].lastName << ", " << student[i].firstName << ":  " << student[i].score[choice] << endl;
+			finalValue += student[i].score[choice];
+		}
+		finalValue = finalValue / max;
+		cout << "Average:  " << finalValue << endl;
+
+		system("pause");
+		cout << string(50, '\n');
+		cin.clear();
+		cin.ignore(1000, '\n');
 	}
 
-}
+	void displayGrade(struct Student student[], int max, int assignment)
+	{
+		{
+			cout << "Student Name  ";
+			for (int j = 0; j < assignment; j++)
+			{
+				cout << j+1 << "  ";
+			}
+			cout << endl;
+
+			for (int i = 0; i < max; i++)
+				{
+					cout << student[i].lastName << ", " << student[i].firstName << "  ";
+					for (int j = 0; j < assignment; j++)
+					{
+						cout << student[i].score[j] << "  ";
+					}
+					cout << endl;
+				}
+		}
+		system("pause");
+		cout << string(50, '\n');
+		cin.clear();
+		cin.ignore(1000, '\n');
+	}
