@@ -3,18 +3,25 @@ CPSC 121 - Lab 5
 Take 3
 Created by:  Brian Bui
 Started on:  2 March 2016
-Last edited:  14 March 2016
+Last edited:  15 March 2016
 */
 
 #include<iostream>
 #include<string>
 #include<cstring>
+#include<fstream>
 
 using namespace std;
 
 const int SIZE = 10;
-const int min = 1, max = 6;
+const int min = 1, max = 8;
 
+//  fStream
+ofstream outFile; //  export file
+ifstream inFile;  //  importfile
+
+
+//  Prototypes
 void getChoice(int&x);  //  get choice function
 void newStudent(struct Student student[], int x, int assignment);  //  first function
 void gradeStudent(struct Student student[], int max, int& assignment);  //  second function
@@ -22,6 +29,11 @@ void findStudent(struct Student student[], int max, int assignment);  //  third 
 void findAssignment(struct Student student[], int max, int choice);  //  fourth function
 void displayGrade(struct Student student[], int max, int assignment);  // fifth function
 
+void saveData(struct Student student[], int x, int y);  // sixth function
+void loadData(struct Student student[], int&x, int&y);  //  seventh function
+
+
+//  Structure
 struct Student  // standard structure, used for students
 {
 	string firstName,
@@ -34,7 +46,8 @@ int main()
 	struct Student cabinet[SIZE];   //  cabinet as in file cabinet heh
 	string lines = "====================";  //  spacing
 
-	int choice;  //  getting choices for the main menu
+	int choice,
+		choiceTwo;  //  getting choices for the main menu
 	int stuCount = 0;  
 	int assignment = 0;
 
@@ -56,7 +69,9 @@ int main()
 			endl << "3..........Find a student." << //  list one student, displaying all their students and courage average
 			endl << "4..........Find an assignment." <<  //  prompt user for assignment, include class average
 			endl << "5..........Display all grades." <<  //  display all grades currently contained in the gradebook
-			endl << "6..........Exit." << endl;
+			endl << "6..........Save data" <<  //  saves the data into a .txt file
+			endl << "7..........Load data" <<  //  opens the txt file
+			endl << "8..........Exit." << endl;
 		cin >> choice;	
 		getChoice(choice);  //  call on the getchoice function
 
@@ -65,7 +80,7 @@ int main()
 			if (stuCount == SIZE)  // see if there are too many students
 			{
 				studentSpace = false;  //  set the studentspace = false
-				cout << string(50, '\n');
+				cout << string(50, '\n');  //  clear screen
 				cin.clear();
 				cin.ignore(1000, '\n');
 				cout << "There are too many students in the registry." << endl;
@@ -83,7 +98,7 @@ int main()
 		{
 			if (stuCount == 0)  //  check if there are students
 			{
-				cout << string(50, '\n');
+				cout << string(50, '\n');  //  clear screen
 				cin.clear();
 				cin.ignore(1000, '\n');
 				cout << "There are no students in the registry." << endl;
@@ -93,7 +108,7 @@ int main()
 				if (assignment == SIZE)
 				{
 					assignmentSpace = false;  // set the assignment space false
-					cout << string(50, '\n');
+					cout << string(50, '\n');  //  clear screen
 					cin.clear();
 					cin.ignore(1000, '\n');
 					cout << "There are too many assignments in the registry." << endl;
@@ -112,7 +127,7 @@ int main()
 		{
 			if (stuCount == 0)   //  check if there are students
 			{
-				cout << string(50, '\n');
+				cout << string(50, '\n');  //  clear screen
 				cin.clear();
 				cin.ignore(1000, '\n');
 				cout << "There are no students in the registry." << endl;
@@ -127,14 +142,14 @@ int main()
 		{
 			if (stuCount == 0)   //  check if there are students
 			{
-				cout << string(50, '\n');
+				cout << string(50, '\n');  //  clear screen
 				cin.clear();
 				cin.ignore(1000, '\n');
 				cout << "There are no students in the registry." << endl;
 			}
 			else if (assignment == 0)  //  check if there are assignments
 			{
-				cout << string(50, '\n');
+				cout << string(50, '\n');  //  clear screen
 				cin.clear();
 				cin.ignore(1000, '\n');
 				cout << "There are no assignments in the registry." << endl;
@@ -148,8 +163,8 @@ int main()
 				}
 				cin.clear();
 				cin.ignore(1000, '\n');
-				cin >> choice;
-				while (choice < 0 || choice > assignment)  //  make sure the user cannot enter numbers out of the parameters
+				cin >> choiceTwo;
+				while (choiceTwo < 0 || choiceTwo > assignment)  //  make sure the user cannot enter numbers out of the parameters
 				{
 					while (cin.fail())
 					{
@@ -157,10 +172,10 @@ int main()
 						cin.ignore();
 					}
 					cout << "Invalid input." << endl;
-					cin >> choice;
+					cin >> choiceTwo;
 				}
 
-				findAssignment(cabinet, stuCount, choice);  // call function
+				findAssignment(cabinet, stuCount, choiceTwo);  // call function
 
 			}
 		}
@@ -169,7 +184,7 @@ int main()
 		{
 			if (stuCount == 0)  //  check if there are students
 			{
-				cout << string(50, '\n');
+				cout << string(50, '\n');  //  clear screen
 				cin.clear();
 				cin.ignore(1000, '\n');
 				cout << "There are no students in the registry." << endl;
@@ -177,7 +192,17 @@ int main()
 			displayGrade(cabinet, stuCount, assignment);  //  call function
 		}
 
-	} while (choice != 6);
+		if (choice == 6)
+		{
+			saveData(cabinet, stuCount, assignment);  //  call function
+		}
+
+		if (choice == 7)
+		{
+			loadData(cabinet, stuCount, assignment);  //  call function
+		}
+
+	} while (choice != 8);
 
 	cout << "Goodbye!" << endl;
 
@@ -206,6 +231,7 @@ void newStudent(struct Student student[], int i, int assignment)  //  creates a 
 		cin >> student[i].firstName;  //  give x student firstname
 		cout << "Please enter the student's last name:  " << endl;
 		cin >> student[i].lastName;  //  give x student lastname
+		outFile << student[i].firstName << ' ' << student[i].lastName;  //  save the students
 		if (assignment > 0)  // check if there were already assignments
 		{
 			cout << "Assignments were found before student was created, please insert scores:" << endl;  //  make up for lost assignments
@@ -215,6 +241,11 @@ void newStudent(struct Student student[], int i, int assignment)  //  creates a 
 				cin >> student[i].score[j];  //  give x student y score
 			}
 		}
+
+		outFile.close();  //  CLOSE THE FILE, VERY IMPORTANT.
+		cout << string(50, '\n');  //  clear screen
+		cin.clear();
+		cin.ignore(1000, '\n');
 }
 
 void gradeStudent(struct Student student[], int max, int& assignment)  //  input assignments scores for students
@@ -225,6 +256,10 @@ void gradeStudent(struct Student student[], int max, int& assignment)  //  input
 			cout << "Assignment:  ";
 			cin >> student[i].score[assignment];  //  give x student y score
 		}
+
+		cout << string(50, '\n');  //  clear screen
+		cin.clear();
+		cin.ignore(1000, '\n');
 }
 
 void findStudent(struct Student student[], int max, int assignment)  //  finds student, gets assignment, calculate average
@@ -250,21 +285,21 @@ void findStudent(struct Student student[], int max, int assignment)  //  finds s
 		cout << "Invalid input." << endl;
 		cin >> choice;
 	}
-	choice = choice - 1;
+	choice = choice - 1;  //  HAVE TO SUBTRACT CHOICE BY 1 OR ELSE IT WILL NOT WORK PROPERLY :|
 
 	{
-		cout << "Student Name:  " << student[choice].lastName << ", " << student[choice].firstName << endl;
+		cout << "Student Name:  " << student[choice].lastName << ", " << student[choice].firstName << endl;  //  output name
 
 		for (int i = 0; i < assignment; i++)
 		{
-			cout << "Assignment " << i + 1 << ":  " << student[choice].score[i] << endl;
+			cout << "Assignment " << i + 1 << ":  " << student[choice].score[i] << endl;   //  for loop to have assignments
 			finalValue += student[choice].score[i];
 		}
-		finalValue = finalValue / assignment;
-		cout << "Average:  " << finalValue << endl;
+		finalValue = finalValue / assignment;  //  calculate average
+		cout << "Average:  " << finalValue << endl;  //  display average
 	}
 	system("pause");
-	cout << string(50, '\n');
+	cout << string(50, '\n');  //  clear screen
 	cin.clear();
 	cin.ignore(1000, '\n');
 }
@@ -279,14 +314,14 @@ void findStudent(struct Student student[], int max, int assignment)  //  finds s
 		choice = choice - 1;
 		for (int i = 0; i < max; i++)
 		{
-			cout << student[i].lastName << ", " << student[i].firstName << ":  " << student[i].score[choice] << endl;
-			finalValue += student[i].score[choice];
+			cout << student[i].lastName << ", " << student[i].firstName << ":  " << student[i].score[choice] << endl;  //  goes down the assignment list, and finds the score
+			finalValue += student[i].score[choice];  
 		}
-		finalValue = finalValue / max;
-		cout << "Average:  " << finalValue << endl;
+		finalValue = finalValue / max;  //  calculate average
+		cout << "Average:  " << finalValue << endl;  //  display average
 
 		system("pause");
-		cout << string(50, '\n');
+		cout << string(50, '\n');  //  clear screen
 		cin.clear();
 		cin.ignore(1000, '\n');
 	}
@@ -294,6 +329,7 @@ void findStudent(struct Student student[], int max, int assignment)  //  finds s
 	void displayGrade(struct Student student[], int max, int assignment)
 	{
 		{
+			//  template line
 			cout << "Student Name  ";
 			for (int j = 0; j < assignment; j++)
 			{
@@ -301,18 +337,63 @@ void findStudent(struct Student student[], int max, int assignment)  //  finds s
 			}
 			cout << endl;
 
+			//  student line
 			for (int i = 0; i < max; i++)
 				{
-					cout << student[i].lastName << ", " << student[i].firstName << "  ";
+					cout << student[i].lastName << ", " << student[i].firstName << "  ";  // finds each student
 					for (int j = 0; j < assignment; j++)
 					{
-						cout << student[i].score[j] << "  ";
+						cout << student[i].score[j] << "  ";  // find the score for each respective student
 					}
 					cout << endl;
 				}
 		}
 		system("pause");
-		cout << string(50, '\n');
+		cout << string(50, '\n');  //  clear screen
+		cin.clear();
+		cin.ignore(1000, '\n');
+	}
+
+	void saveData(struct Student student[], int max, int assignment)
+	{
+		outFile.open("score.txt");  //  opens score.txt, or creates one if cannot be found
+		outFile << max << endl;  //  student count
+		outFile << assignment << endl;  //  assignment cout
+		for (int i = 0; i < max; i++)  //  for loop, saving the array for students
+		{
+			outFile << student[i].firstName << " " << student[i].lastName << " ";
+			for (int j = 0; j <= assignment; j++)  //  for loop saving the scores
+			{
+				outFile << student[i].score[j] << " ";
+			}
+			outFile << endl;
+		}
+
+		cout << "Save successful." << endl;
+		outFile.close();  //  CLOSE THE FILE, VERY IMPORTANT.
+		system("pause");
+		cout << string(50, '\n');  //  clear screen
+		cin.clear();
+		cin.ignore(1000, '\n');
+	}
+
+	void loadData(struct Student student[], int&max, int&assignment)
+	{
+		inFile.open("score.txt");  //  open the file
+		inFile >> max;  //  student count
+		inFile >> assignment;  //  assignment count
+		for (int i = 0; i < max; i++)  //  for loop, opening the array for students
+		{
+			inFile >> student[i].firstName >> student[i].lastName;
+			for (int j = 0; j <= assignment; j++)
+			{
+				inFile >> student[i].score[j];  //  for loop, opening the scores
+			}
+		}
+		inFile.close();  //  CLOSE THE FILE, VERY IMPORTANT.
+		cout << "Load successful.";
+		system("pause");
+		cout << string(50, '\n');  //  clear screen
 		cin.clear();
 		cin.ignore(1000, '\n');
 	}
