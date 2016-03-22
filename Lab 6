@@ -1,0 +1,179 @@
+/*
+Lab 6
+Created by:  Brian Bui
+Created on:  16 March 2016
+Last edited: 21 March 2016
+*/
+
+#include<iostream>
+#include<ctime>  //  reset seed
+#include <cstdlib>  //  srand, rand
+#include<string>
+#include<stdio.h>
+
+using namespace std;
+
+void getChoice(int &x);
+void fillArray(int []);
+void displayArray(int []);
+void shuffle(int []);
+void bubbleSort(int [], int x);
+void selectionSort();
+
+const int min = 1, max = 6;
+const int SIZE = 10;
+
+int main()
+{
+
+{
+	int choice;
+	char yes;
+
+	int intArray[SIZE];
+
+	bool ifArray = 0;
+
+	string lines = "====================";
+
+	do // loop
+	{
+		cout << "Welcome to the Array Manager." << endl;
+		cout << lines << lines << endl;
+		cout << "1..........Fill the array." <<
+			endl << "2..........Display the array." <<
+			endl << "3..........Shuffle the array." <<
+			endl << "4..........Sort array using Bubble Sort." <<
+			endl << "5..........Sort array using Selection Sort." <<
+			endl << "6..........Exit the program." << endl;
+		cin >> choice;
+		getChoice(choice);
+
+		if (choice == 1)
+		{
+			fillArray(intArray);
+			ifArray = 1;
+		}
+		if (choice == 2)
+		{
+			if (ifArray == 0)
+			{
+				cout << "There are currently no user defined arrays, proceed anyway?" << endl << "Press 'Y' to continue.  " << endl;
+				cin >> yes;
+				if (yes == 'Y' || yes == 'y')
+				{
+					displayArray(intArray);
+				}
+			}
+			else
+			{
+				displayArray(intArray);
+			}
+		}
+		if (choice == 3)
+		{
+			shuffle(intArray);
+		}
+		if (choice == 4)
+		{
+			bubbleSort(intArray, SIZE);
+		}
+		if (choice == 5)
+		{
+			selectionSort();
+		}
+	} while (choice != 6);
+
+	cout << "Goodbye!" << endl;
+
+	system("pause");
+	return 0;
+
+	}
+}
+
+void getChoice(int&x)   //  make sure the user cannot enter numbers out of the parameters
+{
+	while (x < min || x > max)
+	{
+		while (cin.fail())
+		{
+			cin.clear();
+			cin.ignore();
+		}
+		cout << "Invalid input." << endl;
+		cin >> x;
+	}
+}
+
+void fillArray(int arr[])
+{
+	cout << "Please enter ten values for the array." << endl;
+	for (int i = 0; i < SIZE; i++)
+	{
+		cout << "Value " << i + 1 << ":  ";
+		cin >> arr[i];
+	}
+}
+
+void displayArray(int arr[])
+{
+	for (int i = 0; i < SIZE; i++)
+	{
+		cout << i + 1 << ".  " << arr[i] << endl;
+	}
+}
+
+void shuffle(int arr[])
+{
+
+	int d10roll;
+	bool isFull[SIZE];
+	int arrPlace[SIZE]; //  array placeholder
+
+	srand(time(NULL));  //  rng
+
+	for (int i = 0; i < SIZE; i++)
+	{
+		arrPlace[i] = arr[i];
+		isFull[i] = 0;
+	}
+
+	for (int j = 0; j < SIZE; j++)
+	{
+		do
+		{
+			d10roll = rand() % 10;
+		} while (isFull[d10roll] == 1);
+		arr[j] = arrPlace[d10roll];
+		isFull[d10roll] == 1;
+	}
+
+	cout << "Array shuffled." << endl;
+}
+
+void bubbleSort(int arr[], int n)
+
+{
+	int a, b, c;
+
+	for (a = 0; a < (n - 1); a++)
+	{
+		for (b = 0; b < n - a - 1; b++)
+		{
+			if (arr[b] > arr[b + 1])
+			{
+				/* Swapping */
+
+				c = arr[b];
+				arr[b] = arr[b + 1];
+				arr[b + 1] = c;
+			}
+		}
+	}
+	cout << "Array organized.  " << endl;
+}
+
+void selectionSort()
+{
+}
