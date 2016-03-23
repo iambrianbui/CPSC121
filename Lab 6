@@ -2,7 +2,7 @@
 Lab 6
 Created by:  Brian Bui
 Created on:  16 March 2016
-Last edited: 21 March 2016
+Last edited: 22 March 2016
 */
 
 #include<iostream>
@@ -13,12 +13,12 @@ Last edited: 21 March 2016
 
 using namespace std;
 
-void getChoice(int &x);
-void fillArray(int []);
-void displayArray(int []);
-void shuffle(int []);
-void bubbleSort(int [], int x);
-void selectionSort(int [], int x);
+void getChoice(int &x);  //  call on the getChoice function
+void fillArray(int []);  //  call on the fillArray function
+void displayArray(int []);  //  call on the displayArray function
+void shuffle(int []);  //  call on the shuffle function
+void bubbleSort(int [], int x);  //  call on the bubbleSort function
+void selectionSort(int [], int x);  //  call on the selectionSort function
 
 const int min = 1, max = 6;
 const int SIZE = 10;
@@ -27,8 +27,8 @@ int main()
 {
 
 {
-	int choice;
-	char yes;
+	int choice;  //  decisions, decisions
+	char yes;  //  check if the user knows what he/she is doing
 
 	int intArray[SIZE];
 
@@ -38,11 +38,11 @@ int main()
 
 	do // loop
 	{
-		cout << "Welcome to the Array Manager." << endl;
+		cout << "Welcome to the Array Manager." << endl;  //  the menu
 		cout << lines << lines << endl;
 		cout << "1..........Fill the array." <<
 			endl << "2..........Display the array." <<
-			endl << "3..........Shuffle the array." <<
+			endl << "3..........Shuffle the array randomly." <<
 			endl << "4..........Sort array using Bubble Sort." <<
 			endl << "5..........Sort array using Selection Sort." <<
 			endl << "6..........Exit the program." << endl;
@@ -51,40 +51,40 @@ int main()
 
 		if (choice == 1)
 		{
-			fillArray(intArray);
-			ifArray = 1;
+			fillArray(intArray);  //  call on the fillArray function
+			ifArray = 1;  //  yes, there is an array now
 		}
 		if (choice == 2)
 		{
 			if (ifArray == 0)
 			{
-				cout << "There are currently no user defined arrays, proceed anyway?" << endl << "Press 'Y' to continue.  " << endl;
-				cin >> yes;
-				if (yes == 'Y' || yes == 'y')
+				cout << "There are currently no user defined arrays, proceed anyway?" << endl << "Press 'Y' to continue.  " << endl;  //  check if the user wants to view an array of nothing 
+				cin >> yes;  
+				if (yes == 'Y' || yes == 'y')  //  case insensitive
 				{
-					displayArray(intArray);
+					displayArray(intArray);  //  call on the function anyway
 				}
 			}
 			else
 			{
-				displayArray(intArray);
+				displayArray(intArray);  //  call on the displayArray function
 			}
 		}
 		if (choice == 3)
 		{
-			shuffle(intArray);
+			shuffle(intArray);  //  call on the shuffle function
 		}
 		if (choice == 4)
 		{
-			bubbleSort(intArray, SIZE);
+			bubbleSort(intArray, SIZE);  //  call on the bubbleSort function
 		}
 		if (choice == 5)
 		{
-			selectionSort(intArray, SIZE);
+			selectionSort(intArray, SIZE);  //  call tbe selectionSort function
 		}
 	} while (choice != 6);
 
-	cout << "Goodbye!" << endl;
+	cout << "Goodbye!" << endl;  //  peace out
 
 	system("pause");
 	return 0;
@@ -108,7 +108,7 @@ void getChoice(int&x)   //  make sure the user cannot enter numbers out of the p
 
 void fillArray(int arr[])
 {
-	cout << "Please enter ten values for the array." << endl;
+	cout << "Please enter ten integers for the array." << endl;  // prompt user for 10 integers
 	for (int i = 0; i < SIZE; i++)
 	{
 		cout << "Value " << i + 1 << ":  ";
@@ -120,23 +120,26 @@ void displayArray(int arr[])
 {
 	for (int i = 0; i < SIZE; i++)
 	{
-		cout << i + 1 << ".  " << arr[i] << endl;
+		cout << i + 1 << ".  " << arr[i] << endl;  //  display arr[i], and repeat for each number
 	}
 }
 
 void shuffle(int arr[])
 {
 
-	srand(time(NULL));  //  rng
 
 	for (int i = 0; i < (SIZE - 1); i++)
 	{
-		int r = i + (rand() % (SIZE - i));
-		int temp = arr[i];
+		srand(time(NULL));  //  rng
+
+		int r = i + (rand() % (SIZE - i));  //  int r(andom) = index + random number (size - 1)
+		int temp = arr[i];  //  the ol' switcheroo
 		arr[i] = arr[r];
 		arr[r] = temp;
 	}
-
+	cout << string(50, '\n');  //  clear screen
+	cin.clear();
+	cin.ignore(1000, '\n');
 	cout << "Array shuffled." << endl;
 }
 
@@ -145,20 +148,21 @@ void bubbleSort(int arr[], int n)
 {
 	int a, b, c;
 
-	for (a = 0; a < (n - 1); a++)
+	for (a = 0; a < (n - 1); a++)  //  a = starting index, a < SIZE - 1, increase a
 	{
-		for (b = 0; b < n - a - 1; b++)
+		for (b = 0; b < n - a - 1; b++)  //  b = secondary index, if b < size - a - 1, increase b
 		{
-			if (arr[b] < arr[b + 1])
+			if (arr[b] < arr[b + 1])  //  if arr[b] is lessthan arr[b+1]
 			{
-				/* Swapping */
-
-				c = arr[b];
+				c = arr[b];  //  swapping function
 				arr[b] = arr[b + 1];
 				arr[b + 1] = c;
 			}
 		}
 	}
+	cout << string(50, '\n');  //  clear screen
+	cin.clear();
+	cin.ignore(1000, '\n');
 	cout << "Array organized.  " << endl;
 }
 
@@ -174,5 +178,8 @@ void selectionSort(int arr[], int n)
 		}
 		swap(arr[i], arr[smallest]);  //  swap the current with the smallest
 	}
+	cout << string(50, '\n');  //  clear screen
+	cin.clear();
+	cin.ignore(1000, '\n');
 	cout << "Array organized.  " << endl;
 }
