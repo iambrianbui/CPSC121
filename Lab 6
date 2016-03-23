@@ -18,7 +18,7 @@ void fillArray(int []);
 void displayArray(int []);
 void shuffle(int []);
 void bubbleSort(int [], int x);
-void selectionSort();
+void selectionSort(int [], int x);
 
 const int min = 1, max = 6;
 const int SIZE = 10;
@@ -80,7 +80,7 @@ int main()
 		}
 		if (choice == 5)
 		{
-			selectionSort();
+			selectionSort(intArray, SIZE);
 		}
 	} while (choice != 6);
 
@@ -127,26 +127,14 @@ void displayArray(int arr[])
 void shuffle(int arr[])
 {
 
-	int d10roll;
-	bool isFull[SIZE];
-	int arrPlace[SIZE]; //  array placeholder
-
 	srand(time(NULL));  //  rng
 
-	for (int i = 0; i < SIZE; i++)
+	for (int i = 0; i < (SIZE - 1); i++)
 	{
-		arrPlace[i] = arr[i];
-		isFull[i] = 0;
-	}
-
-	for (int j = 0; j < SIZE; j++)
-	{
-		do
-		{
-			d10roll = rand() % 10;
-		} while (isFull[d10roll] == 1);
-		arr[j] = arrPlace[d10roll];
-		isFull[d10roll] == 1;
+		int r = i + (rand() % (SIZE - i));
+		int temp = arr[i];
+		arr[i] = arr[r];
+		arr[r] = temp;
 	}
 
 	cout << "Array shuffled." << endl;
@@ -161,7 +149,7 @@ void bubbleSort(int arr[], int n)
 	{
 		for (b = 0; b < n - a - 1; b++)
 		{
-			if (arr[b] > arr[b + 1])
+			if (arr[b] < arr[b + 1])
 			{
 				/* Swapping */
 
@@ -174,6 +162,17 @@ void bubbleSort(int arr[], int n)
 	cout << "Array organized.  " << endl;
 }
 
-void selectionSort()
+void selectionSort(int arr[], int n)
 {
+	for (int i = 0; i < n; i++)  //  i = starting index, i < size, increase i
+	{
+		int smallest = i;  //  set the smallest number = starting index
+		for (int j = i + 1; j < n; j++)  //  j = current index
+		{
+			if (arr[j] < arr[smallest])  // if the current index is less than the smallest index, then the current index is the new smallest
+				smallest = j;
+		}
+		swap(arr[i], arr[smallest]);  //  swap the current with the smallest
+	}
+	cout << "Array organized.  " << endl;
 }
