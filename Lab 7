@@ -1,0 +1,59 @@
+/*
+CPSC121 Lab 7
+Created by:  Brian Bui
+Created on:  6 April 2016
+Last edited:  6 April 2016
+*/
+
+#include "Fight.h"
+#include<iostream>
+
+Fight::Fight()
+{
+	turn = 0;
+}
+
+int Fight::takeTurn()
+{
+	if (foes[0].curHealth <= 0 && foes[1].curHealth <= 0)
+	{
+		return 4;
+	}
+	
+	if (foes[0].curHealth <= 0)
+	{
+		return 3;
+	}
+	else if (foes[1].curHealth <= 0)
+	{
+		return 2;
+	}
+	else
+	{
+		return 1;
+	}
+}
+
+void Fight::generateFighter(Combatant &fighter)
+{
+	for (int i = 0; i < 2; i++)
+	{
+		std::cout << "Please insert a name for this fighter:  " << std::endl;
+		std::cin >> foes[i].name;
+		foes[i].maxHealth = rand() % 20 + 21;
+		foes[i].attackMin = rand() % 3 + 3;
+		foes[i].attackRange = rand() % 5 + 5;
+		foes[i].curHealth = foes[1].maxHealth;
+		foes[i].winCount = 0;
+	}
+}
+
+void Fight::getFighters()
+{
+
+}
+
+void Fight::runFight()
+{
+
+}
