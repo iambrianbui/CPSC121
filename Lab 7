@@ -2,7 +2,7 @@
 CPSC121 Lab 7
 Created by:  Brian Bui
 Created on:  6 April 2016
-Last edited:  6 April 2016
+Last edited:  20 April 2016
 */
 
 #include "Fight.h"
@@ -17,19 +17,23 @@ int Fight::takeTurn()
 {
 	if (foes[0].curHealth <= 0 && foes[1].curHealth <= 0)
 	{
+		turn++;
 		return 4;
 	}
 	
 	if (foes[0].curHealth <= 0)
 	{
+		turn++;
 		return 3;
 	}
 	else if (foes[1].curHealth <= 0)
 	{
+		turn++;
 		return 2;
 	}
 	else
 	{
+		turn++;
 		return 1;
 	}
 }
@@ -41,8 +45,8 @@ void Fight::generateFighter(Combatant &fighter)
 		std::cout << "Please insert a name for this fighter:  " << std::endl;
 		std::cin >> foes[i].name;
 		foes[i].maxHealth = rand() % 20 + 21;
-		foes[i].attackMin = rand() % 3 + 3;
-		foes[i].attackRange = rand() % 5 + 5;
+		foes[i].attackMin = rand() % 3 + 4;
+		foes[i].attackRange = rand() % 5 + 6;
 		foes[i].curHealth = foes[i].maxHealth;
 		foes[i].winCount = 0;
 		std::cout << foes[i].name << " HP:  " << foes[i].maxHealth << "  DMG:  " << foes[i].attackMin << " - " << (foes[i].attackMin + foes[i].attackRange) << std::endl;
@@ -59,17 +63,42 @@ void Fight::runFight()
 {
 	int player1Damage,
 		player2Damage;
+	int repeat;
 
-	player1Damage = rand() % foes[0].attackRange + foes[0].attackMin;
-	player2Damage = rand() % foes[1].attackRange + foes[1].attackMin;
-	foes[0].curHealth = foes[0].curHealth - player2Damage;
-	foes[1].curHealth = foes[1].curHealth - player1Damage;
-	
-	std::cout << foes[0].name << " has dealt " << player1Damage << " damage to " << foes[1].name << std::endl;
-	std::cout << foes[1].name << " has " << foes[1].curHealth << "HP" << std::endl;
-	std::cout << foes[1].name << " has dealt " << player2Damage << " damage to " << foes[0].name << std::endl;
-	std::cout << foes[0].name << " has " << foes[0].curHealth << "HP"<< std::endl;
+	foes[0].curHealth = foes[0].maxHealth;
+	foes[1].curHealth = foes[1].maxHealth;
 
+	do
+	{
+		player1Damage = rand() % foes[0].attackRange + foes[0].attackMin;
+		player2Damage = rand() % foes[1].attackRange + foes[1].attackMin;
+		foes[0].curHealth = foes[0].curHealth - player2Damage;
+		foes[1].curHealth = foes[1].curHealth - player1Damage;
 
-	takeTurn();
+		std::cout << foes[0].name << " has dealt " << player1Damage << " damage to " << foes[1].name << std::endl;
+		std::cout << foes[1].name << " has " << foes[1].curHealth << "HP" << std::endl;
+		std::cout << foes[1].name << " has dealt " << player2Damage << " damage to " << foes[0].name << std::endl;
+		std::cout << foes[0].name << " has " << foes[0].curHealth << "HP" << std::endl;
+
+		repeat = takeTurn();
+		if (repeat == 2)
+		{
+			foes[0].winCount++;
+			std::cout << foes[0].name << " has defeated " << foes[1].name << " " << foes[0].winCount << " times" << std::endl;
+			std::cout << std::endl << "The fight has ended in round number " << turn << std::endl;
+		}
+		else if (repeat == 3) 
+		{
+			foes[1].winCount++;
+			std::cout << foes[1].name << " has defeated " << foes[0].name << " " << foes[1].winCount << " times" << std::endl;
+			std::cout << std::endl << "The fight has ended in round number " << turn << std::endl;
+		}
+		else if (repeat == 4) 
+		{
+		std::cout << "It's a tie!" << std::endl;
+		std::cout << "The fight has ended in round number " << turn << std::endl;
+		
+		}
+
+	} while (repeat == 1);
 }
