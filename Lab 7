@@ -5,100 +5,97 @@ Created on:  6 April 2016
 Last edited:  20 April 2016
 */
 
-#include "Fight.h"
-#include<iostream>
+#include "Fight.h"  //  opens fight header
+#include<iostream>  //  standard
 
-Fight::Fight()
+Fight::Fight()  //  initialize the turn variable
 {
 	turn = 0;
 }
 
-int Fight::takeTurn()
+int Fight::takeTurn()  //  check if someone has lost the fight, note we want an int because we are returning a value
 {
-	if (foes[0].curHealth <= 0 && foes[1].curHealth <= 0)
-	{
-		turn++;
-		return 4;
-	}
 	
-	if (foes[0].curHealth <= 0)
+	if (foes[0].curHealth <= 0)  //  player 1 has lost
 	{
-		turn++;
-		return 3;
+		turn++;  //  increase the turn interval by one, to count the turn in which the player has won
+		return 3;  // return a 3
 	}
-	else if (foes[1].curHealth <= 0)
+	else if (foes[1].curHealth <= 0)  //  player 2 has lost
 	{
-		turn++;
-		return 2;
+		turn++;  //  same 
+		return 2;  //  return a 2
 	}
-	else
+	else  //  no one has lost
 	{
-		turn++;
-		return 1;
+		turn++;  //  increase the turn interval
+		return 1;  //  return a 1
 	}
 }
 
-void Fight::generateFighter(Combatant &fighter)
+void Fight::generateFighter(Combatant &fighter)  //  this function will generate a fighter with random values
 {
+//  for loop
 	for (int i = 0; i < 2; i++)
 	{
-		std::cout << "Please insert a name for this fighter:  " << std::endl;
-		std::cin >> foes[i].name;
-		foes[i].maxHealth = rand() % 20 + 21;
-		foes[i].attackMin = rand() % 3 + 4;
-		foes[i].attackRange = rand() % 5 + 6;
-		foes[i].curHealth = foes[i].maxHealth;
-		foes[i].winCount = 0;
+		std::cout << "Please insert a name for this fighter:  " << std::endl;  // prompt user for name
+		std::cin >> foes[i].name;  // insert name
+		foes[i].maxHealth = rand() % 20 + 21;  // rng
+		foes[i].attackMin = rand() % 3 + 4;  //  rng
+		foes[i].attackRange = rand() % 5 + 6;  //  rng
+		foes[i].curHealth = foes[i].maxHealth;  // set the current health to max health
+		foes[i].winCount = 0;  //  set win count
 		std::cout << foes[i].name << " HP:  " << foes[i].maxHealth << "  DMG:  " << foes[i].attackMin << " - " << (foes[i].attackMin + foes[i].attackRange) << std::endl;
 	}
 }
 
-void Fight::getFighters()
+void Fight::getFighters()  //  call on the generateFighter function
 {
 	Combatant fighter;
 	generateFighter(fighter);
 }
 
-void Fight::runFight()
+void Fight::runFight()  //  IT'S MORPHIN' TIME
 {
-	int player1Damage,
+	//  various values initialized
+	int player1Damage, 
 		player2Damage;
 	int repeat;
 
-	foes[0].curHealth = foes[0].maxHealth;
+	//  (re)start the fight
+	foes[0].curHealth = foes[0].maxHealth; 
 	foes[1].curHealth = foes[1].maxHealth;
 
 	do
 	{
-		player1Damage = rand() % foes[0].attackRange + foes[0].attackMin;
-		player2Damage = rand() % foes[1].attackRange + foes[1].attackMin;
-		foes[0].curHealth = foes[0].curHealth - player2Damage;
-		foes[1].curHealth = foes[1].curHealth - player1Damage;
-
-		std::cout << foes[0].name << " has dealt " << player1Damage << " damage to " << foes[1].name << std::endl;
+		player1Damage = rand() % foes[0].attackRange + foes[0].attackMin;  //  set attack damage
+		player2Damage = rand() % foes[1].attackRange + foes[1].attackMin;  //  set attack damage
+		foes[0].curHealth = foes[0].curHealth - player2Damage;  //  damage
+		std::cout << foes[0].name << " has dealt " << player1Damage << " damage to " << foes[1].name << std::endl;  //  tell the user what just happened
 		std::cout << foes[1].name << " has " << foes[1].curHealth << "HP" << std::endl;
-		std::cout << foes[1].name << " has dealt " << player2Damage << " damage to " << foes[0].name << std::endl;
-		std::cout << foes[0].name << " has " << foes[0].curHealth << "HP" << std::endl;
-
-		repeat = takeTurn();
-		if (repeat == 2)
-		{
-			foes[0].winCount++;
-			std::cout << foes[0].name << " has defeated " << foes[1].name << " " << foes[0].winCount << " times" << std::endl;
-			std::cout << std::endl << "The fight has ended in round number " << turn << std::endl;
-		}
-		else if (repeat == 3) 
-		{
-			foes[1].winCount++;
-			std::cout << foes[1].name << " has defeated " << foes[0].name << " " << foes[1].winCount << " times" << std::endl;
-			std::cout << std::endl << "The fight has ended in round number " << turn << std::endl;
-		}
-		else if (repeat == 4) 
-		{
-		std::cout << "It's a tie!" << std::endl;
-		std::cout << "The fight has ended in round number " << turn << std::endl;
+		repeat = takeTurn();  //  check for turn
 		
+		if (repeat == 2)  //  if someone has won
+		{
+			foes[0].winCount++;  //  increase the wincount for player 1
+			std::cout << foes[0].name << " has defeated " << foes[1].name << " " << foes[0].winCount << " times" << std::endl;  //  prompt user
+			std::cout << std::endl << "The fight has ended in round number " << turn << std::endl;
 		}
+		
+		
+		foes[1].curHealth = foes[1].curHealth - player1Damage;  // damage
+		std::cout << foes[1].name << " has dealt " << player2Damage << " damage to " << foes[0].name << std::endl;  //  tell the user what just happened
+		std::cout << foes[0].name << " has " << foes[0].curHealth << "HP" << std::endl;
+		repeat = takeTurn();  //  check for turn
 
-	} while (repeat == 1);
+
+		else if (repeat == 3)  //  if someone has won
+		{
+			foes[1].winCount++;  //  increase the wincount for player 2
+			std::cout << foes[1].name << " has defeated " << foes[0].name << " " << foes[1].winCount << " times" << std::endl;  //  tell the user what just happened
+			std::cout << std::endl << "The fight has ended in round number " << turn << std::endl;
+		}
+		
+
+	} while (repeat == 1);  //  LET'S DO IT AGAIN
 }
