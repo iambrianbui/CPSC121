@@ -2,7 +2,7 @@
 CPSC121 Lab 7
 Created by:  Brian Bui
 Created on:  6 April 2016
-Last edited:  20 April 2016
+Last edited:  23 April 2016
 */
 
 #include "Fight.h"  //  opens fight header
@@ -15,7 +15,7 @@ Fight::Fight()  //  initialize the turn variable
 
 int Fight::takeTurn()  //  check if someone has lost the fight, note we want an int because we are returning a value
 {
-	
+
 	if (foes[0].curHealth <= 0)  //  player 1 has lost
 	{
 		turn++;  //  increase the turn interval by one, to count the turn in which the player has won
@@ -35,7 +35,7 @@ int Fight::takeTurn()  //  check if someone has lost the fight, note we want an 
 
 void Fight::generateFighter(Combatant &fighter)  //  this function will generate a fighter with random values
 {
-//  for loop
+	//  for loop
 	for (int i = 0; i < 2; i++)
 	{
 		std::cout << "Please insert a name for this fighter:  " << std::endl;  // prompt user for name
@@ -58,44 +58,47 @@ void Fight::getFighters()  //  call on the generateFighter function
 void Fight::runFight()  //  IT'S MORPHIN' TIME
 {
 	//  various values initialized
-	int player1Damage, 
+	int player1Damage,
 		player2Damage;
 	int repeat;
 
 	//  (re)start the fight
-	foes[0].curHealth = foes[0].maxHealth; 
+	foes[0].curHealth = foes[0].maxHealth;
 	foes[1].curHealth = foes[1].maxHealth;
 
 	do
 	{
 		player1Damage = rand() % foes[0].attackRange + foes[0].attackMin;  //  set attack damage
 		player2Damage = rand() % foes[1].attackRange + foes[1].attackMin;  //  set attack damage
-		foes[0].curHealth = foes[0].curHealth - player2Damage;  //  damage
+
+		foes[1].curHealth = foes[1].curHealth - player1Damage;  // damage
 		std::cout << foes[0].name << " has dealt " << player1Damage << " damage to " << foes[1].name << std::endl;  //  tell the user what just happened
 		std::cout << foes[1].name << " has " << foes[1].curHealth << "HP" << std::endl;
 		repeat = takeTurn();  //  check for turn
-		
+
 		if (repeat == 2)  //  if someone has won
 		{
 			foes[0].winCount++;  //  increase the wincount for player 1
-			std::cout << foes[0].name << " has defeated " << foes[1].name << " " << foes[0].winCount << " times" << std::endl;  //  prompt user
+			std::cout << foes[0].name << " has defeated " << foes[1].name << " " << foes[0].winCount << " times." << std::endl;  //  prompt user
 			std::cout << std::endl << "The fight has ended in round number " << turn << std::endl;
+			turn = 0;  //  reset the turn count
 		}
-		
-		
-		foes[1].curHealth = foes[1].curHealth - player1Damage;  // damage
-		std::cout << foes[1].name << " has dealt " << player2Damage << " damage to " << foes[0].name << std::endl;  //  tell the user what just happened
-		std::cout << foes[0].name << " has " << foes[0].curHealth << "HP" << std::endl;
-		repeat = takeTurn();  //  check for turn
 
-
-		else if (repeat == 3)  //  if someone has won
+		else
 		{
-			foes[1].winCount++;  //  increase the wincount for player 2
-			std::cout << foes[1].name << " has defeated " << foes[0].name << " " << foes[1].winCount << " times" << std::endl;  //  tell the user what just happened
-			std::cout << std::endl << "The fight has ended in round number " << turn << std::endl;
-		}
-		
+			foes[0].curHealth = foes[0].curHealth - player2Damage;  //  damage
+			std::cout << foes[1].name << " has dealt " << player2Damage << " damage to " << foes[0].name << std::endl;  //  tell the user what just happened
+			std::cout << foes[0].name << " has " << foes[0].curHealth << "HP" << std::endl;
+			repeat = takeTurn();  //  check for turn
 
+
+			if (repeat == 3)  //  if someone has won
+			{
+				foes[1].winCount++;  //  increase the wincount for player 2
+				std::cout << foes[1].name << " has defeated " << foes[0].name << " " << foes[1].winCount << " times." << std::endl;  //  tell the user what just happened
+				std::cout << std::endl << "The fight has ended in round number " << turn << std::endl;
+				turn = 0;  //  reset the turn count
+			}
+		}
 	} while (repeat == 1);  //  LET'S DO IT AGAIN
 }
