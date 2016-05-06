@@ -76,15 +76,17 @@ LinkedList::~LinkedList()
     typedef struct Node * nodePtr;
     nodePtr curr;
     nodePtr temp;
+    nodePtr delPtr;
 
-    temp = head;
     curr = head;
+    temp = head;
 
-    while (curr!=NULL)
+    while (curr != NULL)
     {
-        temp = curr ->temp;
-        delete curr;
-        curr = temp;
+        temp = curr;
+        curr = curr -> next;
+        delPtr = curr;
+        delete delPtr;
     }
-    head = NULL;
+
 }
