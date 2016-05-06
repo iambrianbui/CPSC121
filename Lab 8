@@ -1,0 +1,90 @@
+/*
+CPSC121 Lab 8
+Created by:  Brian Bui
+Created on:  6 May 2016
+Last edited:  6 May 2016
+*/
+
+#include "LinkedList.h"
+#include<iostream>
+#include<cstdlib>
+
+LinkedList::LinkedList()  //  function 1 (constructor)
+{
+    head = NULL;
+}
+
+void LinkedList::insertItem(int addData)  //  function 2 (insert an item into the linked list)
+{
+
+   typedef struct Node* nodePtr;
+   nodePtr curr;
+   nodePtr n = new Node;
+
+   n-> next = NULL;
+   n-> data = addData;
+
+   if(head!=NULL){
+    curr = head;
+    while(curr->next != NULL){
+        curr = curr -> next;
+    }
+    curr -> next = n;
+   }
+   else
+   {
+       head = n;
+   }
+}
+
+int LinkedList::searchList(int findData)  //  function 3 (find an item in the linked list)
+{
+    typedef struct Node* nodePtr;
+    nodePtr curr;
+    nodePtr temp;
+    nodePtr findPtr = NULL;
+
+    temp = head;
+    curr = head;
+
+    while(curr != NULL && curr->data != findData){
+        temp = curr;
+        curr = curr->next;
+    }
+    if (curr == NULL){
+        return 0;
+    }
+    else
+        return 1;
+}
+
+void LinkedList::display()  //  function 4 (display the linked list)
+{
+    typedef struct Node* nodePtr;
+    nodePtr curr;
+
+    curr = head;
+    while(curr!=NULL)
+    {
+        std::cout << curr->data << std::endl;
+        curr = curr->next;
+    }
+}
+
+LinkedList::~LinkedList()
+{
+    typedef struct Node * nodePtr;
+    nodePtr curr;
+    nodePtr temp;
+
+    temp = head;
+    curr = head;
+
+    while (curr!=NULL)
+    {
+        temp = curr ->temp;
+        delete curr;
+        curr = temp;
+    }
+    head = NULL;
+}
