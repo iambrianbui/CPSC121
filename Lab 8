@@ -11,7 +11,7 @@ Last edited:  6 May 2016
 
 LinkedList::LinkedList()  //  function 1 (constructor)
 {
-    head = NULL;
+    head = NULL;  //  set the head equal to null
 }
 
 void LinkedList::insertItem(int addData)  //  function 2 (insert an item into the linked list)
@@ -19,19 +19,19 @@ void LinkedList::insertItem(int addData)  //  function 2 (insert an item into th
 
    typedef struct Node* nodePtr;
    nodePtr curr;
-   nodePtr n = new Node;
+   nodePtr n = new Node;  //  create a new node
 
-   n-> next = NULL;
-   n-> data = addData;
+   n-> next = NULL;  //  have the new node point to nothing
+   n-> data = addData;  //  set the value within that node to whatever the value inputted
 
-   if(head!=NULL){
+   if(head!=NULL){  //  if there is a head, new will not be the head
     curr = head;
-    while(curr->next != NULL){
+    while(curr->next != NULL){  //  if there are more nodes, those nodes will point upward to this one
         curr = curr -> next;
     }
     curr -> next = n;
    }
-   else
+   else  //  if there is no head, this is the head
    {
        head = n;
    }
@@ -47,14 +47,14 @@ int LinkedList::searchList(int findData)  //  function 3 (find an item in the li
     temp = head;
     curr = head;
 
-    while(curr != NULL && curr->data != findData){
+    while(curr != NULL && curr->data != findData){  //  look for said item
         temp = curr;
         curr = curr->next;
     }
-    if (curr == NULL){
+    if (curr == NULL){  //  if not found, return 0
         return 0;
     }
-    else
+    else  //  if found, return 1
         return 1;
 }
 
@@ -64,14 +64,14 @@ void LinkedList::display()  //  function 4 (display the linked list)
     nodePtr curr;
 
     curr = head;
-    while(curr!=NULL)
+    while(curr!=NULL)  //  standard-smandard display function
     {
         std::cout << curr->data << std::endl;
         curr = curr->next;
     }
 }
 
-LinkedList::~LinkedList()
+LinkedList::~LinkedList()  //  function 5 (kill the list)
 {
     typedef struct Node * nodePtr;
     nodePtr curr;
@@ -81,7 +81,7 @@ LinkedList::~LinkedList()
     curr = head;
     temp = head;
 
-    while (curr != NULL)
+    while (curr != NULL)  // delete the node until there are no more
     {
         temp = curr;
         curr = curr -> next;
