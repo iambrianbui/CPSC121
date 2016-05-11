@@ -228,7 +228,7 @@ int TicTacToe::makeMove(int position)  //  the deep stuff, allows players to mak
 				checkWin();
 			}
 		}
-		else if (position == 8)  //  and then we go back to tic tac toe
+		else if (position == 8)  //  just to make tic tac toe
 		{
 			if (board[2][2] == 0)
 			{
@@ -244,7 +244,7 @@ int TicTacToe::makeMove(int position)  //  the deep stuff, allows players to mak
 				}
 				checkWin();
 			}
-			else  //  whatta final! :))
+			else  //  it just shows how much more there is to learn
 				return -1;  
 		}
 
